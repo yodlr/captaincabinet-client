@@ -47,7 +47,14 @@ describe('CaptainCabinetClient tests', function tests() {
         function onFileUpload(stream, data) {
         var transfer = stream.pipe(fs.createWriteStream('testoutput.txt'));
         transfer.on('finish', function onFinish() {
-          socket.emit('fileUploaded', {'error': null, 'url': 'success'});
+          socket.emit('fileUploaded', {
+            'fileUrl': 'http://file.com/file',
+            'fileSize': 100,
+            'fileName': 'testoutput.txt',
+            'fileId': '12345',
+            'boxId': '54321',
+            'boxUrl': 'http://box.net/file'
+          });
         });
       });
     });
@@ -103,13 +110,14 @@ describe('CaptainCabinetClient tests', function tests() {
         should.not.exist(err);
       });
 
-      client.once('fileUploaded', function onFileUploaded() {
+      client.once('fileUploaded', function onFileUploaded(data) {
+        should.exist(data.fileUrl);
+        should.exist(data.fileSize);
+        should.exist(data.fileName);
+        should.exist(data.fileId);
+        should.exist(data.boxId);
+        should.exist(data.boxUrl);
         done();
-      });
-
-      it('should delete temporary files', function testTmpFiles() {
-        client.tmpFiles.should.be.empty;
-
       });
     });
   });
