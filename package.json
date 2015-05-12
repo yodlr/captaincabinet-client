@@ -2,7 +2,7 @@
   "name": "captaincabinet-client",
   "version": "1.2.0",
   "description": "CaptainCabinetClient",
-  "main": ".lib/",
+  "main": "./lib/",
   "scripts": {
     "jscs": "./node_modules/.bin/yodlr-standard --verbose",
     "test": "TEST=true mocha --reporter=spec && npm run jscs"
