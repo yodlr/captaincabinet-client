@@ -57,6 +57,9 @@ describe('CaptainCabinetClient tests', function tests() {
           });
         });
       });
+      socket.once('fileDelete', function onFileDelete(data) {
+        socket.emit('fileDeleted', {'fileName': data.fileName});
+      });
     });
   });
 
@@ -119,6 +122,14 @@ describe('CaptainCabinetClient tests', function tests() {
         should.exist(data.boxUrl);
         done();
       });
+    });
+
+    it('should delete a file', function testFileDelete(done) {
+      client.FileDelete('test', 'test', 'test', 'test', 'test');
+      client.once('fileDeleted', function onFileDeleted(data) {
+        should.exist(data.fileName);
+        done();
+      })
     });
   });
 });
