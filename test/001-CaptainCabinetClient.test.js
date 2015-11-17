@@ -96,7 +96,7 @@ describe('CaptainCabinetClient tests', function tests() {
         should.not.exist(err);
       });
 
-      client.once('CaptainCabinetError', function onError(err) {
+      client.once('ccError', function onError(err) {
         should.not.exist(err);
       });
     });
@@ -109,7 +109,7 @@ describe('CaptainCabinetClient tests', function tests() {
         should.not.exist(err);
       });
 
-      client.once('CaptainCabinetError', function onError(err) {
+      client.once('ccError', function onError(err) {
         should.not.exist(err);
       });
 
