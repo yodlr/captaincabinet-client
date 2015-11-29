@@ -14,8 +14,9 @@ var testFileLocation = 'test/test/test.txt';
 var fileId;
 var requestId;
 
-var port = 3000;
+var port = 2999;
 var baseUrl = 'http://localhost';
+var socket;
 
 /*global describe it before after*/
 
@@ -32,12 +33,13 @@ describe('CaptainCabinetClient tests', function tests() {
       fs.writeFile(testFileLocation, 'test');
     });
 
-    io.on('connection', function onConnected(socket) {
+    io.on('connection', function onConnected(socketArg) {
+      socket = socketArg;
       socket.once('fileUploadRequest', function onFileUploadRequest(data) {
         fileId = Math.random();
         requestId = data.requestId;
         socket.emit('fileUploadRequested', {'error': null, 'fileId': fileId,
-          'requestId': data.requestId });
+          'requestId': data.requestId, 'size': data.size });
       });
       socket.on('disconnect', function onDisconnect() {
         app.emit('disconnected');
@@ -89,6 +91,8 @@ describe('CaptainCabinetClient tests', function tests() {
       client.FileUploadRequest('test', testFileLocation, 'test');
 
       client.once('fileUploadRequested', function onFileUploadRequest(data) {
+        should.exist(data.fileId);
+        should.exist(data.requestId);
         done();
       });
 
@@ -122,6 +126,27 @@ describe('CaptainCabinetClient tests', function tests() {
         should.exist(data.boxUrl);
         done();
       });
+    });
+
+
+    it('should emit progress on fileprogress', function testFileProgress(done) {
+      client.once('error', function onError(err) {
+        should.not.exist(err);
+      });
+
+      client.once('ccError', function onError(err) {
+        should.not.exist(err);
+      });
+
+      client.once('fileProgress', function onFileProgress(data) {
+        should.exist(data.fileId);
+        should.exist(data.progress);
+        data.fileId.should.equal('test');
+        data.progress.should.equal('100');
+        done();
+      });
+
+      socket.emit('fileProgress', {'fileId': 'test', 'progress': '100'});
     });
 
     it('should delete a file', function testFileDelete(done) {
