@@ -10,4 +10,4 @@ RUN npm install
 ADD . /src/
 
 # environment
-CMD ["/usr/bin/npm", "test"]
+CMD ["/usr/local/bin/npm", "test"]
