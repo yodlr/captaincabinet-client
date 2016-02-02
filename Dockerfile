@@ -9,7 +9,5 @@ RUN npm install
 
 ADD . /src/
 
-RUN rm /root/.ssh/id_rsa
-
 # environment
 CMD ["/usr/bin/npm", "test"]
