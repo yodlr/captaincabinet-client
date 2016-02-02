@@ -1,4 +1,4 @@
-FROM hub.getyodlr.com/nodejs-yodlr
+FROM node:4
 MAINTAINER Ross Kukulinski "ross@getyodlr.com"
 
 WORKDIR /src
