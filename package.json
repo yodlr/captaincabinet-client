@@ -1,6 +1,6 @@
 {
   "name": "captaincabinet-client",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "CaptainCabinetClient",
   "main": "./lib/",
   "scripts": {
